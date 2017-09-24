@@ -1,4 +1,5 @@
-###Thoughts and process
+### Thoughts and process
+
 I had to rush this a bit as my evenings this week were mostly hijacked by an angry sick baby.  This led to me making
 some design changes that I may not have if I had had a leisurely amount if time for this.  Mostly it led to me deciding 
 to use ACF Pro for meta boxes and image selection.  I didn't feel like browsing through an admittedly limiting image 
