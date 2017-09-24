@@ -9,6 +9,11 @@ images is super simple.
 Because this is an internal plugin I didn't include ACF as a library, which would be necessary if you were planning on 
 selling this plugin.  I did include the ACF Pro plugin in the resources dir just in case you don't happen to have it.
 
+Secondly, I chose not to add a million options for customizing the slideshow.  If this was  a real project then sure, We 
+would have options for all of the things you can customize with Owl Carousel.  Since it's not, I didn't think you needed 
+me to type basically the exact same code with minor variations over and over again for all the different settings.  
+Typing them out a few times proves that I know how to do it well enough.  
+
 # Burlington Bytes Challenge Project
 
 This is the master repository for a Burlington Bytes Code Challenge.  To take part, fork the repo and get to work.  
