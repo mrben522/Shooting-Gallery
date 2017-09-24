@@ -13,8 +13,7 @@
 
 if( !class_exists('ShootingGallery') ) {
 	class ShootingGallery {
-		private static $version = '0.1.0';
-		private static $_this;
+		private static $version = '0.1.1';
 		private $settings;
 
 		public static function Instance() {
@@ -34,16 +33,16 @@ if( !class_exists('ShootingGallery') ) {
 			if( is_admin() && !( defined('DOING_AJAX') && DOING_AJAX )) {
 				add_action( 'admin_init', array( $this, 'admin_init' ));
 				add_action( 'admin_menu', array( $this, 'admin_menu' ));
-				add_action( 'admin_init', array( $this, 'add_meta_boxes' ));
+				add_action( 'admin_init', array( $this, 'add_acf_fields' ));
                 add_filter( 'plugin_action_links', array( $this, 'plugin_page_link'), 2, 2);
-                //            hide the acf admin screen
-//            add_filter('acf/settings/show_admin', '__return_false');
+                // Hide the acf admin screen
+                add_filter('acf/settings/show_admin', '__return_false');
 
             } else {
 				add_filter( 'the_content', array( $this, 'default_gallery' ));
 				add_shortcode( 'shooting-gallery', array( $this, 'sg_shortcode' ));
                 add_action('wp_enqueue_scripts', array( $this, 'sg_load_scripts'));
-                add_action( 'init', array( $this, 'add_meta_boxes' ));
+                add_action( 'init', array( $this, 'add_acf_fields' ));
 
             }
 		}
@@ -118,9 +117,6 @@ if( !class_exists('ShootingGallery') ) {
 				array( $this, 'options_page_callback' )
 			);
 		}
-		public function sg_add_options() {
-
-        }
 		public function options_page_callback() {
             echo '
 			<div class="shooting-gallery-settings">
@@ -177,12 +173,10 @@ if( !class_exists('ShootingGallery') ) {
                 $input['max_height'] = sanitize_text_field( $input['max_height']);
             }
 
-//            update_option('shooting_gallery_settings', $options);
-
             return $input;
         }
 
-        public function add_meta_boxes() {
+        public function add_acf_fields() {
 
             // Using ACF for meta boxes and image selection.  Why re-invent the wheel?
 			$post_types = $this->get_setting( 'post_types' );
@@ -244,15 +238,10 @@ if( !class_exists('ShootingGallery') ) {
 		}
 		public function sg_shortcode() {
 
-		    $html = '<div class="sg-shortcode-location">';
-            $html .= $this->render_gallery();
-            $html .= '</div>';
-
-            return $html;
+            return $this->render_gallery();
 		}
 		public function render_gallery() {
-		    global $post;
-		    $images = get_field('gallery_images', $post);
+		    $images = get_field('gallery_images', get_post());
 		    $html = '<div id="shooting-gallery" class="owl-carousel">';
 
             foreach ( $images as $image ) {
@@ -266,7 +255,7 @@ if( !class_exists('ShootingGallery') ) {
         }
         public function default_gallery($content) {
             $output = $content;
-            if (!has_shortcode(get_post()->post_content, 'shooting-gallery')) {
+            if (!has_shortcode(get_post()->post_content, 'shooting-gallery') && get_field('gallery_images', get_post())) {
                 $output = $this->render_gallery();
                 $output .= $content;
             }
