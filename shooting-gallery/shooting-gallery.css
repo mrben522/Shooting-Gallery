@@ -1,0 +1,9 @@
+#shooting-gallery .item {
+    margin: 3px;
+}
+
+#shooting-gallery .item img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
